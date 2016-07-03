@@ -31,8 +31,7 @@ take advantage of other methods of persisting users:
 Requirements
 ------------
 
-* [Zend Framework 2](https://github.com/zendframework/zf2) (latest master)
-* [ZfcBase](https://github.com/ZF-Commons/ZfcBase) (latest master).
+@todo add requirements
 
 Features / Goals
 ----------------
