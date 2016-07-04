@@ -11,7 +11,7 @@ use ZfcUser\Mapper\HydratorInterface as Hydrator;
 use ZfcUser\Mapper\UserInterface as UserMapper;
 use ZfcUser\Options\UserServiceOptionsInterface as ServiceOptions;
 
-class User extends EventProvider implements ServiceManagerAwareInterface
+class User
 {
     /**
      * @var UserMapper

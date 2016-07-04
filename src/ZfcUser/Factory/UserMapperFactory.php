@@ -1,7 +1,7 @@
 <?php
 namespace ZfcUser\Factory;
 
-use Zend\Db;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\Hydrator;
@@ -13,7 +13,7 @@ class UserMapperFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
         /* @var $options Options\ModuleOptions */
         $options = $serviceLocator->get('zfcuser_module_options');
@@ -36,5 +36,18 @@ class UserMapperFactory implements FactoryInterface
         ;
 
         return $mapper;
+    }
+
+    /**
+     * @deprecated ZF2 compability.
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        /* @var ServiceLocatorInterface $serviceLocator */
+        $serviceLocator = $serviceLocator->getServiceLocator();
+
+        $this->__invoke($serviceLocator, "UserMapper");
     }
 }

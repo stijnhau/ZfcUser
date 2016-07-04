@@ -1,10 +1,9 @@
 <?php
 namespace ZfcUser\Factory\View\Helper;
 
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\View\HelperPluginManager;
-use ZfcUser\Form;
 use ZfcUser\Options;
 use ZfcUser\View\Helper\ZfcUserLoginWidget;
 
@@ -13,17 +12,14 @@ class LoginWidgetFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createService(ServiceLocatorInterface $pluginManager)
+    public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
-        /* @var $pluginManager HelperPluginManager */
-        $serviceManager = $pluginManager->getServiceLocator();
-
         /* @var $options Options\ModuleOptions */
-        $options = $serviceManager->get('zfcuser_module_options');
+        $options = $serviceLocator->get('zfcuser_module_options');
         $viewTemplate = $options->getUserLoginWidgetViewTemplate();
 
         /* @var $loginForm Form\Login */
-        $loginForm = $serviceManager->get('zfcuser_login_form');
+        $loginForm = $serviceLocator->get('zfcuser_login_form');
 
         $viewHelper = new ZfcUserLoginWidget;
         $viewHelper
@@ -32,5 +28,18 @@ class LoginWidgetFactory implements FactoryInterface
         ;
 
         return $viewHelper;
+    }
+
+    /**
+     * @deprecated ZF2 compability.
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        /* @var ServiceLocatorInterface $serviceLocator */
+        $serviceLocator = $serviceLocator->getServiceLocator();
+
+        $this->__invoke($serviceLocator, "LoginWidget");
     }
 }

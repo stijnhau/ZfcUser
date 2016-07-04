@@ -1,8 +1,9 @@
 <?php
 namespace ZfcUser\Factory;
 
-use Zend\Authentication\AuthenticationService;
+use Interop\Container\ContainerInterface;
 use Zend\Authentication\Adapter;
+use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -12,7 +13,7 @@ class AuthenticationServiceFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
         /* @var $authStorage Storage\StorageInterface */
         $authStorage = $serviceLocator->get('ZfcUser\Authentication\Storage\Db');
@@ -24,5 +25,18 @@ class AuthenticationServiceFactory implements FactoryInterface
             $authStorage,
             $authAdapter
         );
+    }
+
+    /**
+     * @deprecated ZF2 compability.
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        /* @var ServiceLocatorInterface $serviceLocator */
+        $serviceLocator = $serviceLocator->getServiceLocator();
+
+        $this->__invoke($serviceLocator, "AuthenticationService");
     }
 }
