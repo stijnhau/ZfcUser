@@ -18,7 +18,7 @@
 
 namespace ZfcUser\Factory\Controller;
 
-use Zend\Mvc\Controller\ControllerManager;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Controller\UserController;
@@ -31,11 +31,8 @@ class UserControllerFactory implements FactoryInterface
      * @param ControllerManager $serviceLocator
      * @return UserController
      */
-    public function createService(ServiceLocatorInterface $controllerManager)
+    public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
-        /* @var ServiceLocatorInterface $serviceLocator */
-        $serviceLocator = $controllerManager->getServiceLocator();
-
         $userService = $serviceLocator->get('zfcuser_user_service');
         $registerForm = $serviceLocator->get('zfcuser_register_form');
         $loginForm = $serviceLocator->get('zfcuser_login_form');
@@ -44,5 +41,18 @@ class UserControllerFactory implements FactoryInterface
         $controller = new UserController($userService, $options, $registerForm, $loginForm);
 
         return $controller;
+    }
+
+    /**
+     * @deprecated ZF2 compability.
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        /* @var ServiceLocatorInterface $serviceLocator */
+        $serviceLocator = $serviceLocator->getServiceLocator();
+
+        $this->__invoke($serviceLocator, "userController");
     }
 }

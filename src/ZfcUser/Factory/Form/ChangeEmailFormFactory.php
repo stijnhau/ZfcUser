@@ -1,6 +1,7 @@
 <?php
 namespace ZfcUser\Factory\Form;
 
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Form\ChangeEmail;
@@ -13,12 +14,12 @@ class ChangeEmailFormFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createService(ServiceLocatorInterface $serviceManager)
+    public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
         /* @var $options Options\ModuleOptions */
-        $options = $serviceManager->get('zfcuser_module_options');
+        $options = $serviceLocator->get('zfcuser_module_options');
 
-        $userMapper = $serviceManager->get('zfcuser_user_mapper');
+        $userMapper = $serviceLocator->get('zfcuser_user_mapper');
 
         $emailValidator = new NoRecordExists(array(
             'mapper' => $userMapper,
@@ -34,5 +35,18 @@ class ChangeEmailFormFactory implements FactoryInterface
         $form->setInputFilter($inputFilter);
 
         return $form;
+    }
+
+    /**
+     * @deprecated ZF2 compability.
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        /* @var ServiceLocatorInterface $serviceLocator */
+        $serviceLocator = $serviceLocator->getServiceLocator();
+
+        $this->__invoke($serviceLocator, "ChangeEmailForm");
     }
 }

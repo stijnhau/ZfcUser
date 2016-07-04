@@ -1,8 +1,7 @@
 <?php
 namespace ZfcUser\Factory\Controller\Plugin;
 
-use Zend\Authentication\AuthenticationService;
-use Zend\Mvc\Controller\PluginManager;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Authentication\Adapter;
@@ -13,11 +12,8 @@ class ZfcUserAuthenticationFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createService(ServiceLocatorInterface $pluginManager)
+    public function __invoke(ContainerInterface $serviceManager, $requestedName, array $options = null)
     {
-        /* @var $pluginManager PluginManager */
-        $serviceManager = $pluginManager->getServiceLocator();
-
         /* @var $authService AuthenticationService */
         $authService = $serviceManager->get('zfcuser_auth_service');
 
@@ -31,5 +27,18 @@ class ZfcUserAuthenticationFactory implements FactoryInterface
         ;
 
         return $controllerPlugin;
+    }
+
+    /**
+     * @deprecated ZF2 compability.
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        /* @var ServiceLocatorInterface $serviceLocator */
+        $serviceLocator = $serviceLocator->getServiceLocator();
+
+        $this->__invoke($serviceLocator, "ZfcUserAuthentication");
     }
 }
