@@ -3,7 +3,7 @@
 namespace ZfcUser\Mapper;
 
 use Zend\Crypt\Password\PasswordInterface as ZendCryptPassword;
-use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Hydrator\ClassMethods;
 use ZfcUser\Entity\UserInterface as UserEntity;
 
 class UserHydrator extends ClassMethods implements HydratorInterface
