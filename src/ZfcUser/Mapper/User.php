@@ -2,13 +2,11 @@
 
 namespace ZfcUser\Mapper;
 
-use ZfcBase\Mapper\AbstractDbMapper;
 use Zend\Stdlib\Hydrator\HydratorInterface as Hydrator;
+use Zend\Db\TableGateway\TableGateway as TableGateway;
 
-class User extends AbstractDbMapper implements UserInterface
+class User extends TableGateway implements UserInterface
 {
-    protected $tableName  = 'user';
-
     public function findByEmail($email)
     {
         $select = $this->getSelect()
@@ -37,16 +35,6 @@ class User extends AbstractDbMapper implements UserInterface
         $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
         return $entity;
-    }
-
-    public function getTableName()
-    {
-        return $this->tableName;
-    }
-
-    public function setTableName($tableName)
-    {
-        $this->tableName = $tableName;
     }
 
     public function insert($entity, $tableName = null, Hydrator $hydrator = null)
