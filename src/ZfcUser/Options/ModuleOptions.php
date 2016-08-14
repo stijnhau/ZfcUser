@@ -339,7 +339,7 @@ class ModuleOptions extends AbstractOptions implements UserControllerOptionsInte
      * @param Array $states
      * @return ModuleOptions
      */
-    public function setAllowedLoginStates(Array $states)
+    public function setAllowedLoginStates(array $states)
     {
         $this->allowedLoginStates = $states;
         return $this;

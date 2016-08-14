@@ -2,6 +2,8 @@
 
 namespace ZfcUser\Mapper;
 
+use ZfcUser\Entity\UserInterface as UserEntity;
+
 interface UserInterface
 {
     public function findByEmail($email);
@@ -10,7 +12,9 @@ interface UserInterface
 
     public function findById($id);
 
-    public function insert($user);
+    public function insert(UserEntity $user);
 
-    public function update($user);
+    public function update(UserEntity $user);
+
+    public function delete(UserEntity $user);
 }

@@ -7,10 +7,9 @@ use Zend\Authentication\Result as AuthenticationResult;
 use Zend\EventManager\Event;
 use Zend\Stdlib\RequestInterface as Request;
 use Zend\Stdlib\ResponseInterface as Response;
-use ZfcBase\EventManager\EventProvider;
 use ZfcUser\Exception;
 
-class AdapterChain extends EventProvider implements AdapterInterface
+class AdapterChain implements AdapterInterface
 {
     /**
      * @var AdapterChainEvent
@@ -49,7 +48,7 @@ class AdapterChain extends EventProvider implements AdapterInterface
         $e = $this->getEvent();
         $e->setRequest($request);
 
-        $this->getEventManager()->trigger('authenticate.pre', $e);
+        // $this->getEventManager()->trigger('authenticate.pre', $e);
 
         $result = $this->getEventManager()->trigger('authenticate', $e, function ($test) {
             return ($test instanceof Response);
@@ -69,11 +68,11 @@ class AdapterChain extends EventProvider implements AdapterInterface
         }
 
         if ($e->getIdentity()) {
-            $this->getEventManager()->trigger('authenticate.success', $e);
+            // $this->getEventManager()->trigger('authenticate.success', $e);
             return true;
         }
 
-        $this->getEventManager()->trigger('authenticate.fail', $e);
+        // $this->getEventManager()->trigger('authenticate.fail', $e);
         return false;
     }
 
@@ -102,7 +101,7 @@ class AdapterChain extends EventProvider implements AdapterInterface
     public function logoutAdapters()
     {
         //Adapters might need to perform additional cleanup after logout
-        $this->getEventManager()->trigger('logout', $this->getEvent());
+        // $this->getEventManager()->trigger('logout', $this->getEvent());
     }
 
     /**

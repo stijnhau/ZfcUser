@@ -2,10 +2,10 @@
 
 namespace ZfcUser\Form;
 
-use ZfcBase\InputFilter\ProvidesEventsInputFilter;
+use Zend\InputFilter\InputFilter;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
-class LoginFilter extends ProvidesEventsInputFilter
+class LoginFilter extends InputFilter
 {
     public function __construct(AuthenticationOptionsInterface $options)
     {
@@ -39,6 +39,6 @@ class LoginFilter extends ProvidesEventsInputFilter
             ),
         ));
 
-        $this->getEventManager()->trigger('init', $this);
+        // $this->getEventManager()->trigger('init', $this);
     }
 }

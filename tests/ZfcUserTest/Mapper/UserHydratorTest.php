@@ -7,25 +7,12 @@ use ZfcUser\Mapper\UserHydrator as Hydrator;
 
 class UserHydratorTest extends \PHPUnit_Framework_TestCase
 {
-    const ENCRYPTED_PASSWORD = 'c4zyP455w0rd!';
-
     protected $hydrator;
 
     public function setUp()
     {
-        $hydrator = new Hydrator($this->buildCrypto());
+        $hydrator = new Hydrator();
         $this->hydrator = $hydrator;
-    }
-
-    /**
-     * @covers ZfcUser\Mapper\UserHydrator::getCryptoService
-     */
-    public function testGetCryptoServiceReturnsPasswordInterface()
-    {
-        $this->assertInstanceOf(
-            'Zend\Crypt\Password\PasswordInterface',
-            $this->hydrator->getCryptoService()
-        );
     }
 
     /**
@@ -82,7 +69,7 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectArray['username'], $result->getUsername());
         $this->assertEquals($expectArray['email'], $result->getEmail());
         $this->assertEquals($expectArray['display_name'], $result->getDisplayName());
-        $this->assertEquals(static::ENCRYPTED_PASSWORD, $result->getPassword());
+        $this->assertEquals($expectArray['password'], $result->getPassword());
         $this->assertEquals((int) $expectArray['state'], $result->getState());
         $this->assertEquals($expectArray['id'], $result->getId());
     }
@@ -127,18 +114,5 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
             call_user_func(array($user, $method), $value);
         }
         return $user;
-    }
-
-    private function buildCrypto()
-    {
-        $crypto = $this->getMockForAbstractClass(
-            'Zend\Crypt\Password\PasswordInterface'
-        );
-        $crypto
-            ->expects($this->any())
-            ->method('create')
-            ->will($this->returnValue(static::ENCRYPTED_PASSWORD));
-
-        return $crypto;
     }
 }

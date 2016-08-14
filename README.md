@@ -51,9 +51,7 @@ Installation
 
 #### By cloning project
 
-1. Install the [ZfcBase](https://github.com/ZF-Commons/ZfcBase) ZF2 module
-   by cloning it into `./vendor/`.
-2. Clone this project into your `./vendor/` directory.
+1. Clone this project into your `./vendor/` directory.
 
 #### With composer
 
@@ -80,7 +78,6 @@ Installation
     return array(
         'modules' => array(
             // ...
-            'ZfcBase',
             'ZfcUser',
         ),
         // ...

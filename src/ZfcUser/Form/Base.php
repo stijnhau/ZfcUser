@@ -3,9 +3,9 @@
 namespace ZfcUser\Form;
 
 use Zend\Form\Element;
-use ZfcBase\Form\ProvidesEventsForm;
+use Zend\Form\Form;
 
-class Base extends ProvidesEventsForm
+class Base extends Form
 {
     public function __construct()
     {

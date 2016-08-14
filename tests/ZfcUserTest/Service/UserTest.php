@@ -3,7 +3,6 @@
 namespace ZfcUserTest\Service;
 
 use ZfcUser\Service\User as Service;
-use Zend\Crypt\Password\Bcrypt;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,14 +32,10 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $this->eventManager = $this->getMock('Zend\EventManager\EventManager');
 
-        $this->cryptoService = $this->getMockForAbstractClass(
+        $this->cryptoService = $this->getMock(
             'Zend\Crypt\Password\PasswordInterface'
         );
-        $this->formHydrator = $this->getMockForAbstractClass('ZfcUser\Mapper\HydratorInterface');
-        $this->formHydrator
-            ->expects($this->any())
-            ->method('getCryptoService')
-            ->will($this->returnValue($this->cryptoService));
+        $this->formHydrator = $this->getMockForAbstractClass('Zend\Stdlib\Hydrator\HydratorInterface');
 
         $this->mapper = $this->getMockForAbstractClass('ZfcUser\Mapper\UserInterface');
 
@@ -54,6 +49,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->service->setEventManager($this->eventManager);
         $this->service->setUserMapper($this->mapper);
         $this->service->setAuthService($this->authService);
+        $this->service->setCredentialProcessor($this->cryptoService);
     }
 
     /**
@@ -260,7 +256,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $service = new Service;
         $service->setServiceManager($this->serviceManager);
         $this->assertInstanceOf(
-            'ZfcUser\Mapper\HydratorInterface',
+            'Zend\Stdlib\Hydrator\HydratorInterface',
             $service->getFormHydrator()
         );
     }

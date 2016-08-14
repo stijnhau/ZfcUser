@@ -28,7 +28,7 @@ class Register extends Base
             $this->remove('display_name');
         }
         $this->get('submit')->setLabel('Register');
-        $this->getEventManager()->trigger('init', $this);
+        //$this->getEventManager()->trigger('init', $this);
     }
 
     /**

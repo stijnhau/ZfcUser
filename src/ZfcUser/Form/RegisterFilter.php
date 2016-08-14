@@ -2,11 +2,11 @@
 
 namespace ZfcUser\Form;
 
-use ZfcBase\InputFilter\ProvidesEventsInputFilter;
 use ZfcUser\Options\RegistrationOptionsInterface;
 use Zend\Validator\ValidatorInterface;
+use Zend\InputFilter\InputFilter;
 
-class RegisterFilter extends ProvidesEventsInputFilter
+class RegisterFilter extends InputFilter
 {
     /**
      * @var ValidatorInterface
@@ -108,7 +108,7 @@ class RegisterFilter extends ProvidesEventsInputFilter
             ),
         ));
 
-        $this->getEventManager()->trigger('init', $this);
+        //$this->getEventManager()->trigger('init', $this);
     }
 
     public function getEmailValidator()

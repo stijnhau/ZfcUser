@@ -3,10 +3,10 @@
 namespace ZfcUser\Form;
 
 use Zend\Form\Element;
-use ZfcBase\Form\ProvidesEventsForm;
+use Zend\Form\Form;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
-class Login extends ProvidesEventsForm
+class Login extends Form
 {
     /**
      * @var AuthenticationOptionsInterface
@@ -67,7 +67,7 @@ class Login extends ProvidesEventsForm
             'priority' => -100,
         ));
 
-        $this->getEventManager()->trigger('init', $this);
+        // $this->getEventManager()->trigger('init', $this);
     }
 
     /**

@@ -1,12 +1,10 @@
 <?php
-namespace ZfcUser\Factory;
+namespace ZfcUser\Factory\Mapper;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Stdlib\Hydrator;
-use ZfcUser\Mapper;
-use ZfcUser\Options;
+use ZfcUser\Mapper\User;
 
 class UserMapperFactory implements FactoryInterface
 {
@@ -15,27 +13,13 @@ class UserMapperFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
-        /* @var $options Options\ModuleOptions */
-        $options = $serviceLocator->get('zfcuser_module_options');
+        /** @var $table \Zend\Db\TableGateway\AbstractTableGateway */
+        $table = $serviceLocator->get('zfcuser_user_tablegateway');
 
-        /* @var $dbAdapter Db\Adapter\Adapter */
-        $dbAdapter = $serviceLocator->get('zfcuser_zend_db_adapter');
-
-        /** @todo change harcoded table to an module_option */
-        $mapper = new Mapper\User('user', $dbAdapter);
-
-        $entityClass = $options->getUserEntityClass();
-
-        /* @var $hydrator Hydrator\HydratorInterface */
+        /* @var $hydrator \Zend\Hydrator\HydratorInterface */
         $hydrator = $serviceLocator->get('zfcuser_user_hydrator');
 
-        $mapper
-            ->setEntityPrototype(new $entityClass)
-            ->setHydrator($hydrator)
-            ->setTableName($options->getTableName())
-        ;
-
-        return $mapper;
+        return new User($table, $hydrator);
     }
 
     /**

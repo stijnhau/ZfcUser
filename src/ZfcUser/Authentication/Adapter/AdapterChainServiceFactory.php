@@ -1,20 +1,20 @@
 <?php
 namespace ZfcUser\Authentication\Adapter;
 
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Authentication\Adapter\Exception\OptionsNotFoundException;
+use ZfcUser\Options\ModuleOptions;
 
 class AdapterChainServiceFactory implements FactoryInterface
 {
-
     /**
      * @var ModuleOptions
      */
     protected $options;
 
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
         $chain = new AdapterChain();
 
@@ -25,15 +25,28 @@ class AdapterChainServiceFactory implements FactoryInterface
             $adapter = $serviceLocator->get($adapterName);
 
             if (is_callable(array($adapter, 'authenticate'))) {
-                $chain->getEventManager()->attach('authenticate', array($adapter, 'authenticate'), $priority);
+                //$chain->getEventManager()->attach('authenticate', array($adapter, 'authenticate'), $priority);
             }
 
             if (is_callable(array($adapter, 'logout'))) {
-                $chain->getEventManager()->attach('logout', array($adapter, 'logout'), $priority);
+                //$chain->getEventManager()->attach('logout', array($adapter, 'logout'), $priority);
             }
         }
 
         return $chain;
+    }
+
+    /**
+     * @deprecated ZF2 compability.
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        /* @var ServiceLocatorInterface $serviceLocator */
+        $serviceLocator = $serviceLocator->getServiceLocator();
+
+        $this->__invoke($serviceLocator, "AdapterChainService");
     }
 
 
