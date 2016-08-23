@@ -13,13 +13,10 @@ class UserMapperFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
-        /** @var $table \Zend\Db\TableGateway\AbstractTableGateway */
-        $table = $serviceLocator->get('zfcuser_user_tablegateway');
+        /* @var $dbAdapter Db\Adapter\Adapter */
+        $dbAdapter = $serviceLocator->get('zfcuser_zend_db_adapter');
 
-        /* @var $hydrator \Zend\Hydrator\HydratorInterface */
-        $hydrator = $serviceLocator->get('zfcuser_user_hydrator');
-
-        return new User($table, $hydrator);
+        return new User($options->getTableName(), $dbAdapter);
     }
 
     /**
@@ -32,6 +29,6 @@ class UserMapperFactory implements FactoryInterface
         /* @var ServiceLocatorInterface $serviceLocator */
         $serviceLocator = $serviceLocator->getServiceLocator();
 
-        $this->__invoke($serviceLocator, "UserMapper");
+        return $this->__invoke($serviceLocator, "UserMapper");
     }
 }

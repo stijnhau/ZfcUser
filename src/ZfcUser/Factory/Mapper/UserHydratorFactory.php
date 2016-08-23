@@ -30,6 +30,6 @@ class UserHydratorFactory implements FactoryInterface
         /* @var ServiceLocatorInterface $serviceLocator */
         $serviceLocator = $serviceLocator->getServiceLocator();
 
-        $this->__invoke($serviceLocator, "UserHydrator");
+        return $this->__invoke($serviceLocator, "UserHydrator");
     }
 }
