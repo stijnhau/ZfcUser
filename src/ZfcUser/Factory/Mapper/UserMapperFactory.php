@@ -15,8 +15,12 @@ class UserMapperFactory implements FactoryInterface
     {
         /* @var $dbAdapter Db\Adapter\Adapter */
         $dbAdapter = $serviceLocator->get('zfcuser_zend_db_adapter');
+        $options = $serviceLocator->get('zfcuser_module_options');
+        $hydrator = $serviceLocator->get('zfcuser_user_hydrator');
 
-        return new User($options->getTableName(), $dbAdapter);
+        $mapper = new User($options->getTableName(), $dbAdapter);
+        $mapper->setHydrator($hydrator);
+        return $mapper;
     }
 
     /**

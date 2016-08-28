@@ -2,7 +2,9 @@
 
 namespace ZfcUser\Authentication\Adapter;
 
+use Zend\EventManager\Event;
+
 interface ChainableAdapter
 {
-    public function authenticate(AdapterChainEvent $e);
+    public function authenticate(Event $e);
 }

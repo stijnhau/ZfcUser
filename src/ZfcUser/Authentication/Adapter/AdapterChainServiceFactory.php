@@ -25,11 +25,11 @@ class AdapterChainServiceFactory implements FactoryInterface
             $adapter = $serviceLocator->get($adapterName);
 
             if (is_callable(array($adapter, 'authenticate'))) {
-                //$chain->getEventManager()->attach('authenticate', array($adapter, 'authenticate'), $priority);
+                $chain->getEventManager()->attach('authenticate', array($adapter, 'authenticate'), $priority);
             }
 
             if (is_callable(array($adapter, 'logout'))) {
-                //$chain->getEventManager()->attach('logout', array($adapter, 'logout'), $priority);
+                $chain->getEventManager()->attach('logout', array($adapter, 'logout'), $priority);
             }
         }
 

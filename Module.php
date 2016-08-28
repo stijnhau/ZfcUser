@@ -63,10 +63,7 @@ class Module implements
     {
         return array(
             'invokables' => array(
-                'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
-                'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
-                'zfcuser_user_service'              => 'ZfcUser\Service\User',
             ),
             'factories' => array(
                 'zfcuser_module_options'                        => 'ZfcUser\Factory\ModuleOptionsFactory',
@@ -76,9 +73,13 @@ class Module implements
                 'zfcuser_register_form'                         => 'ZfcUser\Factory\Form\RegisterFormFactory',
                 'zfcuser_user_mapper'                           => 'ZfcUser\Factory\UserMapperFactory',
                 'zfcuser_user_hydrator'                         => 'ZfcUser\Factory\Mapper\UserHydratorFactory',
+                'ZfcUser\Authentication\Adapter\Db'             => 'ZfcUser\Factory\Authentication\Adapter\Db',
+                'ZfcUser\Authentication\Storage\Db'             => 'ZfcUser\Factory\Authentication\Storage\Db',
+                'zfcuser_user_service'                          => 'ZfcUser\Factory\Service\User',
             ),
             'aliases' => array(
-                'zfcuser_register_form_hydrator' => 'zfcuser_user_hydrator'
+                'zfcuser_register_form_hydrator' => 'zfcuser_user_hydrator',
+                'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
             ),
         );
     }

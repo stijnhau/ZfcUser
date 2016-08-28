@@ -7,10 +7,13 @@ use Zend\Authentication\Result as AuthenticationResult;
 use Zend\EventManager\Event;
 use Zend\Stdlib\RequestInterface as Request;
 use Zend\Stdlib\ResponseInterface as Response;
+use ZfcUser\EventManager\EventProvider;
 use ZfcUser\Exception;
 
 class AdapterChain implements AdapterInterface
 {
+    use EventProvider;
+
     /**
      * @var AdapterChainEvent
      */
@@ -48,7 +51,7 @@ class AdapterChain implements AdapterInterface
         $e = $this->getEvent();
         $e->setRequest($request);
 
-        // $this->getEventManager()->trigger('authenticate.pre', $e);
+        $this->getEventManager()->trigger('authenticate.pre', $e);
 
         $result = $this->getEventManager()->trigger('authenticate', $e, function ($test) {
             return ($test instanceof Response);
@@ -68,11 +71,11 @@ class AdapterChain implements AdapterInterface
         }
 
         if ($e->getIdentity()) {
-            // $this->getEventManager()->trigger('authenticate.success', $e);
+            $this->getEventManager()->trigger('authenticate.success', $e);
             return true;
         }
 
-        // $this->getEventManager()->trigger('authenticate.fail', $e);
+        $this->getEventManager()->trigger('authenticate.fail', $e);
         return false;
     }
 
@@ -83,7 +86,7 @@ class AdapterChain implements AdapterInterface
      */
     public function resetAdapters()
     {
-        $listeners = $this->getEventManager()->getListeners('authenticate');
+        $listeners = $this->getEventManager()->getSharedManager()->getListeners(['authenticate'], 'authenticate');
         foreach ($listeners as $listener) {
             $listener = $listener->getCallback();
             if (is_array($listener) && $listener[0] instanceof ChainableAdapter) {
@@ -101,7 +104,7 @@ class AdapterChain implements AdapterInterface
     public function logoutAdapters()
     {
         //Adapters might need to perform additional cleanup after logout
-        // $this->getEventManager()->trigger('logout', $this->getEvent());
+        $this->getEventManager()->trigger('logout', $this->getEvent());
     }
 
     /**

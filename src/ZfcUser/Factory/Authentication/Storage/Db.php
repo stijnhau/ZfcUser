@@ -4,7 +4,7 @@ namespace ZfcUser\Factory\Authentication\Storage;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfcUser\Factory\Authentication\Storage\Db;
+use ZfcUser\Authentication\Storage\Db as adapter;
 
 class Db implements FactoryInterface
 {
@@ -13,7 +13,7 @@ class Db implements FactoryInterface
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
-        $db = new Db();
+        $db = new adapter();
         $db->setServiceManager($serviceLocator);
 
         return $db;

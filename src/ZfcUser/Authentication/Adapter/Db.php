@@ -5,10 +5,9 @@ namespace ZfcUser\Authentication\Adapter;
 use InvalidArgumentException;
 use Zend\Authentication\Result as AuthenticationResult;
 use Zend\Crypt\Password\Bcrypt;
+use Zend\EventManager\Event;
 use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\Session\Container as SessionContainer;
-use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthenticationEvent;
 use ZfcUser\Entity\UserInterface as UserEntity;
 use ZfcUser\Mapper\HydratorInterface as Hydrator;
 use ZfcUser\Mapper\UserInterface as UserMapper;
@@ -49,8 +48,10 @@ class Db extends AbstractAdapter
         $this->getStorage()->clear();
     }
 
-    public function authenticate(AuthenticationEvent $event)
+    public function authenticate(Event $event)
     {
+        $event = $event->getTarget();
+
         if ($this->isSatisfied()) {
             $storage = $this->getStorage()->read();
             $event->setIdentity($storage['identity'])
